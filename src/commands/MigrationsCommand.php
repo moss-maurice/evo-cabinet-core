@@ -5,9 +5,10 @@ namespace mmaurice\cabinet\core\commands;
 use mmaurice\cabinet\core\App;
 use mmaurice\cabinet\core\exceptions\CommandException;
 use mmaurice\cabinet\core\helpers\CmdHelper;
+use mmaurice\cabinet\core\prototypes\commands\CommandProtorype;
 use mmaurice\cabinet\core\providers\ModxProvider;
 
-class MigrationsCommand extends mmaurice\cabinet\core\prototypes\commands\CommandProtorype
+class MigrationsCommand extends CommandProtorype
 {
     // php cli.php migrations
     public function actionIndex()

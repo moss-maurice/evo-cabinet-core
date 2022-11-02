@@ -4,8 +4,9 @@ namespace mmaurice\cabinet\core\prototypes\controllers;
 
 use mmaurice\cabinet\core\App;
 use mmaurice\cabinet\core\helpers\MailerHelper;
+use mmaurice\cabinet\core\prototypes\controllers\ControllerPrototype;
 
-class MailControllerPrototype extends mmaurice\cabinet\core\prototypes\controllers\ControllerPrototype
+class MailControllerPrototype extends ControllerPrototype
 {
     public function __construct()
     {

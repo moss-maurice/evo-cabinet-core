@@ -3,8 +3,9 @@
 namespace mmaurice\cabinet\core\prototypes\controllers;
 
 use mmaurice\cabinet\core\App;
+use mmaurice\cabinet\core\prototypes\controllers\ControllerPrototype;
 
-class ApiControllerPrototype extends mmaurice\cabinet\core\prototypes\controllers\ControllerPrototype
+class ApiControllerPrototype extends ControllerPrototype
 {
     const STATUS_SUCCESS = 'success';
     const STATUS_ERROR = 'error';

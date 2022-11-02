@@ -2,7 +2,9 @@
 
 namespace mmaurice\cabinet\core\events;
 
-class OnLoadWebPageCacheEvent extends mmaurice\cabinet\core\events\OnPageNotFoundEvent
+use mmaurice\cabinet\core\prototypes\EventPrototype;
+
+class OnLoadWebPageCacheEvent extends EventPrototype
 {
     
 }

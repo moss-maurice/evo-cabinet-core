@@ -2,10 +2,12 @@
 
 namespace mmaurice\cabinet\core\prototypes\models;
 
+use mmaurice\cabinet\core\prototypes\models\ModelPrototype;
+
 /**
  * Класс-прототип модели для работы с БД
  */
-class DbModelPrototype extends mmaurice\cabinet\core\prototypes\models\ModelPrototype
+class DbModelPrototype extends ModelPrototype
 {
     const MODE_ASSOC = 'assoc';
     const MODE_NUM = 'num';

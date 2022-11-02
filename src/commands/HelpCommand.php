@@ -4,8 +4,9 @@ namespace mmaurice\cabinet\core\commands;
 
 use mmaurice\cabinet\core\App;
 use mmaurice\cabinet\core\helpers\CmdHelper;
+use mmaurice\cabinet\core\prototypes\commands\CommandProtorype;
 
-class HelpCommand extends mmaurice\cabinet\core\prototypes\commands\CommandProtorype
+class HelpCommand extends CommandProtorype
 {
     // php cli.php help
     public function actionIndex()

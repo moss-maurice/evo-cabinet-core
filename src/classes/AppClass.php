@@ -278,10 +278,10 @@ class AppClass extends SingletonPrototype
 
     public static function getEventClassName($eventClassName)
     {
-        $class = str_replace('\\system\\classes\\', '\\app\\events\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($eventClassName) . 'Event');
+        $class = str_replace('\\core\\classes\\', '\\events\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($eventClassName) . 'Event');
 
         if (!class_exists($class)) {
-            $class = str_replace('\\system\\classes\\', '\\system\\events\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($eventClassName) . 'Event');
+            $class = str_replace('\\core\\classes\\', '\\core\\events\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($eventClassName) . 'Event');
         }
 
         if (class_exists($class)) {
@@ -293,7 +293,7 @@ class AppClass extends SingletonPrototype
 
     public static function getControllerClassName($controllerClassName)
     {
-        return str_replace('\\system\\classes\\', '\\app\\controllers\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($controllerClassName) . 'Controller');
+        return str_replace('\\core\\classes\\', '\\controllers\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($controllerClassName) . 'Controller');
     }
 
     public static function getControllerActionName($controllerActionName)
@@ -303,10 +303,10 @@ class AppClass extends SingletonPrototype
 
     public static function getCommandClassName($commandClassName)
     {
-        $class = str_replace('\\system\\classes\\', '\\app\\commands\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($commandClassName) . 'Command');
+        $class = str_replace('\\core\\classes\\', '\\commands\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($commandClassName) . 'Command');
 
         if (!class_exists($class)) {
-            $class = str_replace('\\system\\classes\\', '\\system\\commands\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($commandClassName) . 'Command');
+            $class = str_replace('\\core\\classes\\', '\\core\\commands\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($commandClassName) . 'Command');
         }
 
         if (class_exists($class)) {
@@ -323,7 +323,7 @@ class AppClass extends SingletonPrototype
 
     public static function getWidgetClassName($widgetClassName)
     {
-        return str_replace('\\system\\classes\\', '\\app\\widgets\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($widgetClassName) . 'Widget');
+        return str_replace('\\core\\classes\\', '\\widgets\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($widgetClassName) . 'Widget');
     }
 
     public static function getWidgetActionName()

@@ -2,7 +2,9 @@
 
 namespace mmaurice\cabinet\core\prototypes\models;
 
-class ExtendDbModelPrototype extends mmaurice\cabinet\core\prototypes\models\DbModelPrototype
+use mmaurice\cabinet\core\prototypes\models\DbModelPrototype;
+
+class ExtendDbModelPrototype extends DbModelPrototype
 {
     const REL_ONE = 'one';
     const REL_MANY = 'many';
