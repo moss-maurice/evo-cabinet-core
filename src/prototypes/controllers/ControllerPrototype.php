@@ -56,9 +56,9 @@ class ControllerPrototype
     {
         $controllerName = App::init()->extractControllerName(get_called_class());
 
-        $content = App::response()->renderTemplate(App::getPublicRoot('/views/' . $controllerName . '/' . $templateName . '.php'), $parametrs);
+        $content = App::response()->renderTemplate(App::getPublicRoot("/views/{$controllerName}/{$templateName}.php"), $parametrs);
 
-        $layout = App::response()->renderTemplate(App::getPublicRoot('/views/layouts/' . $this->layout . '.php'), array_merge($parametrs, ['content' => $content]));
+        $layout = App::response()->renderTemplate(App::getPublicRoot("/views/layouts/{$this->layout}.php"), array_merge($parametrs, ['content' => $content]));
 
         ModxProvider::sendForward(App::init()->getConfig('handlePage'), $layout);
     }

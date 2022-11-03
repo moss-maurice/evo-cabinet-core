@@ -197,7 +197,7 @@ class AppClass extends SingletonPrototype
 
     public static function getPublicRoot($path = '/')
     {
-        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $_SERVER['DOCUMENT_ROOT'] . '/assets/plugins/modx-evo-lk' . $path);
+        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, realpath(dirname(__FILE__) . "/../../../../../app/{$path}"));
     }
 
     public static function getCoreRoot($path = '/')
@@ -236,9 +236,10 @@ class AppClass extends SingletonPrototype
 
     public function getAppWebAlias()
     {
-        $handlePageSource = ModxProvider::getDocument($this->getConfig('handlePage'));
+        //$handlePageSource = ModxProvider::getDocument($this->getConfig('handlePage'));
 
-        return trim($handlePageSource['alias'], '/');
+        //return trim($handlePageSource['alias'], '/');
+        return trim($this->getConfig('alias'), '/');
     }
 
     public function makeUrl($path = '/', $properties = [])
@@ -247,7 +248,10 @@ class AppClass extends SingletonPrototype
             $path .= '?' . http_build_query($properties);
         }
 
-        return str_replace(['{lk}'], [$this->getAppWebAlias()], $path);
+        $path = str_replace(['{lk}'], [$this->getAppWebAlias()], $path);
+        $path = rtrim(parse_url($path, PHP_URL_PATH), '/') . parse_url($path, PHP_URL_QUERY);
+
+        return $path;
     }
 
     public function extractControllerName($className)

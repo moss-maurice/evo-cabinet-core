@@ -4,9 +4,9 @@ namespace mmaurice\cabinet\core\models;
 
 use mmaurice\cabinet\core\App;
 use mmaurice\cabinet\core\models\SiteContentModel;
-use mmaurice\cabinet\core\models\TemplatesVarsContentValuesModel;
-use mmaurice\cabinet\core\models\TemplatesVarsModel;
-use mmaurice\cabinet\core\models\TemplatesVarsTemplatesModel;
+use mmaurice\cabinet\core\models\SiteTmplvarContentvaluesModel;
+use mmaurice\cabinet\core\models\SiteTmplvarsModel;
+use mmaurice\cabinet\core\models\SiteTmplvarTemplatesModel;
 
 class SiteContentWithTvModel extends SiteContentModel
 {
@@ -38,9 +38,9 @@ class SiteContentWithTvModel extends SiteContentModel
                 "COALESCE(tvcv.value, tv.default_text, '') AS value",
             ],
             'join' => [
-                "LEFT JOIN " . TemplatesVarsTemplatesModel::getFullModelTableName() . " tvt ON tvt.templateid = sc.template",
-                "LEFT JOIN " . TemplatesVarsModel::getFullModelTableName() . " tv ON tv.id = tvt.tmplvarid",
-                "LEFT JOIN " . TemplatesVarsContentValuesModel::getFullModelTableName() . " tvcv ON tvcv.tmplvarid = tv.id AND tvcv.contentid = sc.id",
+                "LEFT JOIN " . SiteTmplvarTemplatesModel::getFullModelTableName() . " tvt ON tvt.templateid = sc.template",
+                "LEFT JOIN " . SiteTmplvarsModel::getFullModelTableName() . " tv ON tv.id = tvt.tmplvarid",
+                "LEFT JOIN " . SiteTmplvarContentvaluesModel::getFullModelTableName() . " tvcv ON tvcv.tmplvarid = tv.id AND tvcv.contentid = sc.id",
             ],
         ]];
     }
