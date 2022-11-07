@@ -721,9 +721,10 @@ class WebUsersModel extends Model
     public function getId()
     {
         if (isset($_SESSION) and array_key_exists('web_user', $_SESSION) and array_key_exists('user_id', $_SESSION['web_user'])) {
-            return (int) $_SESSION['web_user']['user_id'];
+            return intval($_SESSION['web_user']['user_id']);
         }
-        return 0;
+
+        return null;
     }
 
     public function getIdByLogin($login)

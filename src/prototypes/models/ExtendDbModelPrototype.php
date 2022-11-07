@@ -13,8 +13,8 @@ class ExtendDbModelPrototype extends DbModelPrototype
     public $relations = [];
 
     public $namespaces = [
-        '\\kreexus\\lk\\app\\models\\',
-        '\\kreexus\\lk\\system\\models\\',
+        '\\mmaurice\\cabinet\\models\\',
+        '\\mmaurice\\cabinet\\core\\models\\',
     ];
 
     public static function getTableName()

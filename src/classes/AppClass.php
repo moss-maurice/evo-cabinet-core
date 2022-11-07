@@ -236,10 +236,10 @@ class AppClass extends SingletonPrototype
 
     public function getAppWebAlias()
     {
-        //$handlePageSource = ModxProvider::getDocument($this->getConfig('handlePage'));
+        $handlePageSource = ModxProvider::getDocument($this->getConfig('handlePage'));
 
-        //return trim($handlePageSource['alias'], '/');
-        return trim($this->getConfig('alias'), '/');
+        return trim($handlePageSource['alias'], '/');
+        //return trim($this->getConfig('alias'), '/');
     }
 
     public function makeUrl($path = '/', $properties = [])
@@ -297,11 +297,23 @@ class AppClass extends SingletonPrototype
 
     public static function getControllerClassName($controllerClassName)
     {
-        return str_replace('\\core\\classes\\', '\\controllers\\', '\\' . __NAMESPACE__ . '\\' . ucfirst($controllerClassName) . 'Controller');
+        $controllerClassName = trim($controllerClassName, "\/\\");
+
+        $preparedControllerClassName = ucfirst($controllerClassName) . 'Controller';
+
+        if (preg_match('/^(.*)\/([^\/\^]+)$/imU', $controllerClassName, $matches)) {
+            $matches[2] = ucfirst($matches[2]);
+
+            $preparedControllerClassName = "{$matches[1]}\\{$matches[2]}Controller";
+        }
+
+        return str_replace('\\core\\classes\\', '\\controllers\\', '\\' . __NAMESPACE__ . '\\' . $preparedControllerClassName);
     }
 
     public static function getControllerActionName($controllerActionName)
     {
+        $controllerActionName = trim($controllerActionName, "\/\\");
+
         return 'action' . ucfirst($controllerActionName);
     }
 

@@ -36,6 +36,11 @@ class RequestClass extends ClassPrototype
         return $this->extractArray($_POST, $fieldName, $defaultValue);
     }
 
+    public function extractAll()
+    {
+        return $_REQUEST;
+    }
+
     /**
      * Метод извлечения данных из массива $_GET
      *
