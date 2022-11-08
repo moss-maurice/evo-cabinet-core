@@ -215,9 +215,9 @@ class AppClass extends SingletonPrototype
         return ModxProvider::isCliMode();
     }
 
-    public function redirect($url)
+    public function redirect($url, $properties = [])
     {
-        return ModxProvider::redirect($this->makeUrl($url));
+        return ModxProvider::redirect($this->makeUrl($url, $properties));
     }
 
     /**
@@ -249,7 +249,7 @@ class AppClass extends SingletonPrototype
         }
 
         $path = str_replace(['{lk}'], [$this->getAppWebAlias()], $path);
-        $path = rtrim(parse_url($path, PHP_URL_PATH), '/') . parse_url($path, PHP_URL_QUERY);
+        $path = rtrim(rtrim(parse_url($path, PHP_URL_PATH), '/') . '?' . parse_url($path, PHP_URL_QUERY), '?');
 
         return $path;
     }

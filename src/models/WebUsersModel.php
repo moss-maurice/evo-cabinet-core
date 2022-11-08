@@ -1012,9 +1012,7 @@ class WebUsersModel extends Model
         $join = [
             "LEFT JOIN " . WebUserAttributesModel::getFullModelTableName() . " wua ON wua.internalKey = t.id",
         ];
-        $where = [
-            "t.deleted = '0'",
-        ];
+        $where = [];
 
         $order = [];
 
@@ -1045,16 +1043,6 @@ class WebUsersModel extends Model
                     //"AND wua.role = '{$filter['roleId']}'",
                 ]);
             }
-        }
-
-        if (array_key_exists('agency', $filter) and !empty($filter['agency'])) {
-            $join = array_merge($join, [
-                "LEFT JOIN " . WebUserSettingsModel::getFullModelTableName() . " wus ON wus.webuser = t.id AND wus.setting_name = 'agency'",
-            ]);
-
-            $where = array_merge($where, [
-                "AND wus.setting_value LIKE '%" . $filter['agency'] . "%'",
-            ]);
         }
 
         if ((array_key_exists('email', $filter) and !empty($filter['email'])) or (array_key_exists('phone', $filter) and !empty($filter['phone']))) {
