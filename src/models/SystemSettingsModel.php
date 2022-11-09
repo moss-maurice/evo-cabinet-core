@@ -1,6 +1,6 @@
 <?php
 
-namespace mmaurice\cabinet\models;
+namespace mmaurice\cabinet\core\models;
 
 use mmaurice\cabinet\core\App;
 use mmaurice\cabinet\core\models\Model;
