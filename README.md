@@ -4,5 +4,5 @@ Private User Cabinet Core for ModX Evolution 1.4.x
 
 ### Установка:
 ```sh
-    composer require mmaurice/evo-cabinet-core
+composer require mmaurice/evo-cabinet-core
 ```
