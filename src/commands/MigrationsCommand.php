@@ -82,6 +82,12 @@ class MigrationsCommand extends CommandProtorype
                     foreach ($sqls as $index => $sql) {
                         $sql = trim($sql);
 
+                        $sql = str_replace([
+                            '{table_prefix}',
+                        ], [
+                            $table_prefix,
+                        ], $sql);
+
                         if (!empty($sql)) {
                             $resource = $modx->db->query($sql);
 
@@ -191,8 +197,8 @@ class MigrationsCommand extends CommandProtorype
     protected function migrationsFolder()
     {
         return array_values(array_filter([
-            realpath(App::getCoreRoot() . 'migrations'),
-            realpath(App::getPublicRoot() . 'migrations'),
+            realpath(App::getCoreRoot('/migrations')),
+            realpath(App::getPublicRoot('/migrations')),
         ]));
     }
 }
