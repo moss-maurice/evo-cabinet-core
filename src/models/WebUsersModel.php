@@ -307,8 +307,6 @@ class WebUsersModel extends Model
 
                         if (is_array($inputFields) and !empty($fields)) {
                             if ($userAttributesModel->insert($fields)) {
-                                $inputFields['login_home'] = 465;
-
                                 foreach ($inputFields as $inputFieldsKey => $inputFieldsValue) {
                                     $field = array(
                                         'webuser' => $userId,
@@ -521,7 +519,6 @@ class WebUsersModel extends Model
                             $fields = array(
                                 'webuser' => $userId,
                                 'setting_name' => 'login_home',
-                                'setting_value' => '465',
                             );
                             if ($userSettingsModel->insert($fields)) {
                                 $fields = array(
@@ -537,6 +534,37 @@ class WebUsersModel extends Model
             return $this->autoManagerLogin();
         }
         return false;
+    }
+
+    static public function getUserDataByLogin($userLogin)
+    {
+        if (is_int($userLogin) and $userLogin) {
+            if (!empty($userData = WebUsersModel::model()->getIdByLogin($userLogin))) {
+                if ($id = intval($userData['id'])) {
+                    return WebUsersModel::model()->getList([
+                        'alias' => 't1',
+                        'select' => [
+                            "t1.username AS login",
+                            "t2.email AS email",
+                            "t3_firstName.setting_value AS firstName",
+                            "t3_lastName.setting_value AS lastName",
+                        ],
+                        'join' => [
+                            "JOIN " . WebUserAttributesModel::getFullModelTableName() . " t2 ON t1.id = t2.internalKey",
+                            "JOIN " . WebUserSettingsModel::getFullModelTableName() . " t3_firstName ON t1.id = t3_firstName.webuser",
+                            "JOIN " . WebUserSettingsModel::getFullModelTableName() . " t3_lastName ON t1.id = t3_lastName.webuser",
+                        ],
+                        'where' => [
+                            "t1.id = '{$id}'",
+                            "AND t3_firstName.setting_name = 'first_name'",
+                            "AND t3_lastName.setting_name = 'last_name'",
+                        ],
+                    ]);
+                }
+            }
+        }
+
+        return [];
     }
 
     /**
@@ -673,7 +701,7 @@ class WebUsersModel extends Model
                     $user = $userModel->getRow($webUser);
 
                     if (md5($user['id'] . $user['password']) == $code) {
-                        $password = $this->passGenerate();
+                        $password = static::passGenerate();
 
                         if ($this->updatePass($attributes['internalKey'], $password, $password)) {
                             $subject = 'Восстановление пароля';
@@ -911,7 +939,7 @@ class WebUsersModel extends Model
         return $string;
     }
 
-    public function passGenerate($number = 10)
+    public static function passGenerate($number = 10)
     {
         $symbols = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0');
         $result = '';
