@@ -151,47 +151,57 @@ class ExtendDbModelPrototype extends DbModelPrototype
 
     public function getRelatedData($item, $getRelatedItems = false, $log = false)
     {
-        if ($getRelatedItems) {
+        $getRelatedItems = $getRelatedItems === true ? ['*'] : $getRelatedItems;
+
+        if (is_array($getRelatedItems) and !empty($getRelatedItems)) {
             if (is_array($this->relations) and !empty($this->relations)) {
-                foreach ($this->relations as $name => $relation) {
-                    if (($getRelatedItems === true) or (is_array($getRelatedItems) and !empty($getRelatedItems) and in_array($name, $getRelatedItems))) {
-                        $preparedClasses = [];
-                        $preparedClasses[] = $relation[1][0];
+                foreach ($getRelatedItems as $relatedItem) {
+                    if (preg_match('/^([^\.]+)\.*([^$]*)$/imu', $relatedItem, $matches)) {
+                        foreach ($this->relations as $name => $relation) {
+                            if (($matches[1] !== '*') and ($matches[1] !== $name)) {
+                                continue;
+                            }
 
-                        foreach ($this->namespaces as $namespace) {
-                            $preparedClasses[] = $namespace . $relation[1][0];
-                        }
+                            $preparedClasses = [];
+                            $preparedClasses[] = $relation[1][0];
 
-                        if (is_array($preparedClasses) and !empty($preparedClasses)) {
-                            foreach ($preparedClasses as $preparedClass) {
-                                if (!class_exists($preparedClass)) {
-                                    continue;
-                                }
+                            foreach ($this->namespaces as $namespace) {
+                                $preparedClasses[] = $namespace . $relation[1][0];
+                            }
 
-                                $class = new $preparedClass;
-
-                                if (!is_null($item[$relation[0]])) {
-                                    $filter = [
-                                        'from' => $this->getFullTableName($class->tableName),
-                                        'where' => [
-                                            (isset($relation[3]['alias']) ? $relation[3]['alias'] : 't') . ".{$relation[1][1]} = '{$item[$relation[0]]}'",
-                                        ],
-                                    ];
-
-                                    if (array_key_exists(3, $relation) and is_array($relation[3]) and !empty($relation[3])) {
-                                        foreach ($relation[3] as $key => $value) {
-                                            if (array_key_exists($key, $filter)) {
-                                                $filter[$key] = array_merge($filter[$key], $value);
-                                            } else {
-                                                $filter[$key] = $value;
-                                            }
-                                        }
+                            if (is_array($preparedClasses) and !empty($preparedClasses)) {
+                                foreach ($preparedClasses as $preparedClass) {
+                                    if (!class_exists($preparedClass)) {
+                                        continue;
                                     }
 
-                                    if ($relation[2] === self::REL_ONE) {
-                                        $item[$name] = $class->getItem($filter, $getRelatedItems, $log);
-                                    } else {
-                                        $item[$name] = $class->getList($filter, $getRelatedItems, $log);
+                                    $class = new $preparedClass;
+
+                                    if (!is_null($item[$relation[0]])) {
+                                        $filter = [
+                                            'from' => $this->getFullTableName($class->tableName),
+                                            'where' => [
+                                                (isset($relation[3]['alias']) ? $relation[3]['alias'] : 't') . ".{$relation[1][1]} = '{$item[$relation[0]]}'",
+                                            ],
+                                        ];
+
+                                        if (array_key_exists(3, $relation) and is_array($relation[3]) and !empty($relation[3])) {
+                                            foreach ($relation[3] as $key => $value) {
+                                                if (array_key_exists($key, $filter)) {
+                                                    $filter[$key] = array_merge($filter[$key], $value);
+                                                } else {
+                                                    $filter[$key] = $value;
+                                                }
+                                            }
+                                        }
+
+                                        $nextRelations = ($matches[1] !== '*') ? (!empty($matches[2]) ? [$matches[2]] : false) : true;
+
+                                        if ($relation[2] === self::REL_ONE) {
+                                            $item[$name] = $class->getItem($filter, $nextRelations, $log);
+                                        } else {
+                                            $item[$name] = $class->getList($filter, $nextRelations, $log);
+                                        }
                                     }
                                 }
                             }
