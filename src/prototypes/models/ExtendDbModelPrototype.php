@@ -197,10 +197,28 @@ class ExtendDbModelPrototype extends DbModelPrototype
 
                                         $nextRelations = ($matches[1] !== '*') ? (!empty($matches[2]) ? [$matches[2]] : false) : true;
 
+                                        if (!array_key_exists($name, $item)) {
+                                            $item[$name] = [];
+                                        }
+
                                         if ($relation[2] === self::REL_ONE) {
-                                            $item[$name] = $class->getItem($filter, $nextRelations, $log);
+                                            $result = $class->getItem($filter, $nextRelations, $log);
                                         } else {
-                                            $item[$name] = $class->getList($filter, $nextRelations, $log);
+                                            $result = $class->getList($filter, $nextRelations, $log);
+                                        }
+
+                                        if (is_array($result)) {
+                                            if (!array_key_exists($name, $item)) {
+                                                $item[$name] = [];
+                                            }
+
+                                            if (is_array($item[$name])) {
+                                                $item[$name] = array_merge($item[$name], $result);
+                                            } else {
+                                                $item[$name] = $result;
+                                            }
+                                        } else {
+                                            $item[$name] = $result;
                                         }
                                     }
                                 }
